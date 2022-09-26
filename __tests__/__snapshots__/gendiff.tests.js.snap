@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`added value 1`] = `
+"{
+      name: meme
+    + age: 1
+}"
+`;
+
+exports[`deleted value 1`] = `
+"{
+      name: meme
+    - age: 0
+}"
+`;
+
+exports[`remplaced value 1`] = `
+"{
+      name: meme
+    - age: 0
+    + age: 2
+}"
+`;

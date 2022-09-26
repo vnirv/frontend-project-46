@@ -8,7 +8,7 @@
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest __tests__/"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "homepage": "https://github.com/vnirv/frontend-project-46#readme",
   "dependencies": {
     "commander": "^9.4.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.3"
   }
 }
