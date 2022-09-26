@@ -1,6 +1,5 @@
 import { program } from 'commander';
-import path from 'path';
-import fs from 'fs';
+import { parceFiles } from './parcer.js';
 
 import diff from './diff.js';
 
@@ -13,10 +12,7 @@ program
   .argument('<tree>', 'inital tree path')
   .argument('<compareTree>', 'compare tree path')
   .action((path1, path2) => {
-    const [tree, compareTree] = [path1, path2]
-    .map(p => path.resolve(process.cwd(), p))
-    .map(p => fs.readFileSync(p).toString())
-    .map(content => JSON.parse(content))
+    const [tree, compareTree] = [path1, path2].map(parceFiles);
 
     const result = diff(tree, compareTree);
 
