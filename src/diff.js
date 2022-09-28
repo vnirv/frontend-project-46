@@ -1,4 +1,6 @@
-const typeToSignMap = {
+import JSONToString from '../src/formatter.js'
+
+export const typeToSignMap = {
     missing: '-',
     added: '+',
     equal: ' ',
@@ -10,26 +12,34 @@ const diffToJSON = (diff) => {
     diff.forEach(item => {
         const sign = typeToSignMap[item.type];
 
-        finalJSON[`${sign} ${item.key}`] = item.value
+        const children = item.children;
+
+        finalJSON[`${sign} ${item.key}`] = children ? diffToJSON(children) : item.value
     })
 
     return finalJSON;
 }
 
-const JSONToString = (json) => {
-    return JSON
-    .stringify(json, null, 4)
-    .replaceAll('"', '')
-    .replaceAll(',', ''); 
-}
+const isPlainObject = (smth) => typeof smth === 'object' && !Array.isArray(smth)
 
 const buildDiffList = (tree, compareTree) => {
     const fileDiff = [];
 
     Object.entries(tree).forEach(([key, value]) => {
         const compareValue = compareTree[key];
-    
+
         delete compareTree[key];
+
+        if ([value, compareValue].every(isPlainObject)) {
+            fileDiff.push({
+                type: 'equal',
+                value,
+                key,
+                children: buildDiffList(value, compareValue),
+            });
+
+            return;
+        }
     
         if (!compareValue) {
             fileDiff.push({ type: 'missing', value, key })
@@ -44,7 +54,7 @@ const buildDiffList = (tree, compareTree) => {
             return;
         }
     
-        fileDiff.push({ type: 'equal', value: value, key })
+        fileDiff.push({ type: 'equal', value, key })
     });
     
     Object.entries(compareTree).forEach(([key, value]) => {
@@ -54,8 +64,10 @@ const buildDiffList = (tree, compareTree) => {
     return fileDiff;
 }
 
+
 const diff = (tree, compareTree) => {
     const fileDiff = buildDiffList(tree, compareTree);
+
     const json = diffToJSON(fileDiff);
 
     return JSONToString(json);

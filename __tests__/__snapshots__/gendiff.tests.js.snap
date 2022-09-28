@@ -7,6 +7,17 @@ exports[`added value 1`] = `
 }"
 `;
 
+exports[`deep structure 1`] = `
+"{
+      name: meme
+    - age: 0
+    - state: {
+        good: yes
+    }
+    + state: good
+}"
+`;
+
 exports[`deleted value 1`] = `
 "{
       name: meme

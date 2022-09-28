@@ -23,3 +23,10 @@ test('deleted value', () => {
     const result = gendiff(file1, file2);
     expect(result).toMatchSnapshot();
 });
+
+test('deep structure', () => {
+    const file1 = {name: 'meme', age: 0, state: {good: 'yes'}};
+    const file2 = {name: 'meme', state: 'good'};
+    const result = gendiff(file1, file2);
+    expect(result).toMatchSnapshot();
+});
